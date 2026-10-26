@@ -1,14 +1,32 @@
 {
-  "validLogin": {
+  "baseUrl": "https://www.saucedemo.com/",
+
+  "validUser": {
     "username": "standard_user",
     "password": "secret_sauce"
   },
-  "invalidLogin": {
+  "invalidUser": {
     "username": "invalid_user",
     "password": "wrong_password"
   },
-  "missingPassword": {
+  "noPasswordUser": {
     "username": "standard_user",
     "password": ""
+  },
+
+  "expectedPageTitle": "Swag Labs",
+  "expectedProductCount": 6,
+
+  "cartProducts": [
+    "Sauce Labs Backpack",
+    "Sauce Labs Bolt T-Shirt",
+    "Sauce Labs Onesie"
+  ],
+  "productToRemove": "Sauce Labs Bolt T-Shirt",
+
+  "checkoutInfo": {
+    "firstName": "Test",
+    "lastName": "User",
+    "postalCode": "12345"
   }
 }

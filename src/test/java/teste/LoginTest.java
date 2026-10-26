@@ -2,42 +2,46 @@ package teste;
 
 
 import base.BaseTest;
-import static org.testng.Assert.assertTrue;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
-import tools.jackson.databind.JsonNode;
 import utils.DataDriven;
 
-
-
 public class LoginTest extends BaseTest {
-    @Test
-    public void loginTestSuccessfulLogin(){
-        JsonNode data = DataDriven.jsonReader().get("validLogin");
-        var loginPage =new LoginPage(driver);
-        loginPage.login(data.get("username").asText(),data.get("password").asText());
-
-        assertTrue(driver.getCurrentUrl().contains("/inventory.html"),
-                "Successful login should redirect to inventory page.");
-    }
 
     @Test
-    public void loginTestVerifyInvalidLogin(){
-        JsonNode data = DataDriven.jsonReader().get("invalidLogin");
-        var loginPage = new LoginPage(driver);
-        loginPage.login(data.get("username").asText(),data.get("password").asText());
-
-        assertTrue(loginPage.getErrorMessage().contains("Username and password do not match"),
-                "Invalid-login error should explain that the username/password do not match.");
-    }
-    @Test
-    public void loginTestVerifyLoginWithoutPassword(){
-        JsonNode data = DataDriven.jsonReader().get("missingPassword");
+    public void verifySuccessfulLogin() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(data.get("username").asText(), data.get("password").asText());
+        loginPage.login(
+                DataDriven.getValue("validUser", "username"),
+                DataDriven.getValue("validUser", "password"));
 
-        assertTrue(loginPage.getErrorMessage().contains("Password is required"),
-                "An error should be displayed when the password is empty.");
+        Assert.assertTrue(driver.getCurrentUrl().contains("/inventory.html"),
+                "User was not redirected to the inventory page");
     }
 
+    @Test
+    public void verifyInvalidLogin() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(
+                DataDriven.getValue("invalidUser", "username"),
+                DataDriven.getValue("invalidUser", "password"));
+
+        Assert.assertTrue(
+                loginPage.getErrorMessage().contains("Username and password do not match"),
+                "Wrong error message for invalid login");
+    }
+
+    @Test
+    public void verifyLoginWithoutPassword() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(
+                DataDriven.getValue("noPasswordUser", "username"),
+                DataDriven.getValue("noPasswordUser", "password"));
+
+        Assert.assertTrue(
+                loginPage.getErrorMessage().contains("Password is required"),
+                "Wrong error message when password is empty");
+    }
 }
+

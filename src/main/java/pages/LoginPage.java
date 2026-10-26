@@ -2,37 +2,39 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class LoginPage {
+
     private WebDriver driver;
+
     private By usernameField = By.id("user-name");
     private By passwordField = By.id("password");
     private By loginButton = By.id("login-button");
-    private By errorMessage = By.xpath("//h3");
-    public LoginPage(WebDriver driver){this.driver=driver;}
+    private By errorMessage = By.cssSelector("[data-test='error']");
 
-    public void enterUserName(String username){
-        driver.findElement(usernameField).clear();
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void enterUsername(String username) {
         driver.findElement(usernameField).sendKeys(username);
     }
-    public void enterPassword(String password){
-        driver.findElement(passwordField).clear();
-        if (password != null && !password.isEmpty()){
-            driver.findElement(passwordField).sendKeys(password);
-        }
+
+    public void enterPassword(String password) {
+        driver.findElement(passwordField).sendKeys(password);
     }
-    public void clickLogin(){
+
+    public void clickLogin() {
         driver.findElement(loginButton).click();
     }
-    public void login(String username, String password){
-        enterUserName(username);
+
+    public void login(String username, String password) {
+        enterUsername(username);
         enterPassword(password);
         clickLogin();
     }
-    public String getErrorMessage(){
-        WebElement error = driver.findElement(errorMessage);
-        return error.getText();
-    }
 
+    public String getErrorMessage() {
+        return driver.findElement(errorMessage).getText();
+    }
 }
